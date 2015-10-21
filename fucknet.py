@@ -1,6 +1,7 @@
 # *-* encoding: utf-8 *-*
 import urllib
 import time
+import os
 
 from subprocess import call
 
@@ -42,6 +43,20 @@ class Fucker(object):
 			self.ip_full = new_ip
 		else:
 			return False
+
+
+	def test_ip(self):
+		ips = self.ips_ok()
+		if len(ips)>0:
+			for ip in ips:
+				print "HACIENDO PING A "+str(ip)
+				response = os.system("ping -c 1 " + ip)
+				if response == 0:
+					self.do_something(ip)
+ 				else:
+ 				  clear_ip(ip)
+		print ips
+
 
 	def run(self):
 		print "Comenzando pruebas de red, por favor espere...."
