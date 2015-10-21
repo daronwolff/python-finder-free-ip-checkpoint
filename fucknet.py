@@ -1,6 +1,5 @@
 # *-* encoding: utf-8 *-*
 import urllib
-#import socket
 import time
 
 from subprocess import call
@@ -8,27 +7,29 @@ from subprocess import call
 class Fucker(object):
 	def __init__(self):
 		self.range = "192.168.151."
-		self.start = 0
+		self.start = 1
 		self.end = 254
-		self.current_ip = 0
+		self.current_ip = 1
 		self.log = "index.txt"
-		self.url_test = "http://youtube.com"
+		self.url_test = "http://facebook.com"
 		self.locked = True
 		self.ip_full = self.range+str(self.current_ip)
 		self.if_name = "wlan0"
 		self.key = "checkpoint"
+		self.ips_ok = [] # Ips con permisos
+		self.ips_free = []  # Ips con permisos que no están siendo usadas
 
 	def test_url(self):
 		try:
 			urllib.urlretrieve(self.url_test, filename=self.log)
 			archivo 	= open(self.log)
 			contenido 	= archivo.read()
-			if self.key in contenido:
+			if self.key in contenido or "ERR_CONNECTION_RESET" in contenido:
 				return False
 			else:
 				return True
 		except Exception:
-			print "No se pudo conectar con "+self.url_test+", parece haber problemas haber conexión. Verifique con sudo ifconfig "
+			print "No se pudo conectar con "+self.url_test+", parece haber problemas con la conexión. Verifique con sudo ifconfig "
 			return False
 
 	def change_ip(self):
@@ -43,12 +44,22 @@ class Fucker(object):
 			return False
 
 	def run(self):
+		print "Comenzando pruebas de red, por favor espere...."
 		while (self.current_ip<=self.end):
-			time.sleep(10)
+			time.sleep(3)
 			test = self.test_url()
 			if test:
-				print "FUNCIONA "+str(self.url_test)+" CON "+str(self.ip_full)
+				print "   *** FUNCIONA "+str(self.url_test)+" CON "+str(self.ip_full)
+				self.ips_ok.append(str(self.ip_full))
 			self.change_ip()
+
+
+		if len(self.ips_ok)>0:
+			print "Las ips sin restricciones a la url "+self.url_test+" son: "
+			for x in self.ips_ok:
+				print x
+		else:
+			print "Lo lamento, no pude encontrar IPS sin restricciones :("
 		
 ######################################################################################################
 ##

@@ -1212,7 +1212,7 @@ window.viewManager = new UCViewManager();
 		footer_td.setAttribute("className", footer_td.getAttribute("className") + " usercheck_main_background_class");
 	}
 	
-		UserCheck.DataObj.IID = "0DD1883A-F833-872A-E5CD-F6B5873EDC05";
+		UserCheck.DataObj.IID = "F53DFE6A-04DE-431D-0737-2872A8AA8094";
 	
 	UserCheck.DataObj.frame = 0;
 	
